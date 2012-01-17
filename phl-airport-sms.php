@@ -13,7 +13,7 @@ define("SCRAPERWIKI_QUERY", "select%20*%20from%20%60swdata%60%20where%20%60fligh
 // Function to fetch JSON for a specific flight from Scrapewiki.
 function getFlightInfo($flight_num, $date, $direction) {
 	
-	$direction = (strtolower($direction) == "d") ? "MARITIMO" : "AEREO";
+	$direction = (strtolower($direction) == "d") ? "MARITIMO" : "AIR";
 	$query = str_replace(array("[[flight_num]]", "[[date]]", "[[direction]]"), array($flight_num, $date, $direction), SCRAPERWIKI_QUERY);
 	$url = SCRAPERWIKI_API_URL."?format=".SCRAPERWIKI_FORMAT."&name=".SCRAPERWIKI_NAME."&query=".$query;
 	return json_decode(file_get_contents($url));
@@ -42,16 +42,10 @@ function formatResponse($direction, $flight_info, $channel) {
 // Set the date.
 $date = date("m.d.y");
 
-
-say("Gracias por llamar a nuestro sitema de rastreo.", array("voice" => "Diego"));
-
 if($currentCall->channel == "VOICE") {
-	say("Gracias por llamar a nuestro sistema de rastreo de paquetes.");
-	$flight = ask("Por favor diga o entre su numero de rastreo.", array(
-	'voice' => 'Diego',
-	"choices" => "[1-25 DIGITS]", 
-	"attempts" => 3, "timeout" => 5));
-	$flight_type = ask("es enviado via maritima o es enviado via aerea?", array("choices" => "aereo, maritimo", "attempts" => 3, "timeout" => 5));
+	say("Thank you for calling my airport test application.");
+	$flight = ask("Please say or enter your numeric flight number.", array("choices" => "[1-24 DIGITS]", "attempts" => 3, "timeout" => 5));
+	$flight_type = ask("Is sent by sea or air?", array("choices" => "air, sea", "attempts" => 3, "timeout" => 5));
 	
 	$flight_num = $flight->value;
 	$direction = $flight_type->value;
@@ -75,7 +69,7 @@ try {
 }
 
 catch (Exception $ex) {
-	say("Lo sentimos, no pudimos encontrar nada en estos momentos, por favor intente mas tarde. actualizaciones son hechas cada media hora");
+	say("Sorry, could not look up flight info. Please try again later.");
 }
 
 ?>
