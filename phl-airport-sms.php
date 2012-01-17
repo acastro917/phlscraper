@@ -45,9 +45,11 @@ $date = date("m.d.y");
 if($currentCall->channel == "VOICE") {
 	say("Gracias por llamar a nuestro sistema de rastreo.");
 	$flight = ask("Por favor entre o diga su numero de rastreo.", array(
-	'voice' => 'Diego',
+	"voice" => 'Diego',
 	"choices" => "[1-25 DIGITS]", 
-	"attempts" => 3, "timeout" => 5));	$flight_type = ask("es enviado via maritima o aereo?", array("choices" => "maritima, aereo", "attempts" => 3, "timeout" => 5));
+	"attempts" => 3, "timeout" => 5));	
+	
+	$flight_type = ask("es enviado via maritima o aereo?", array("voice" => 'Diego', "choices" => "maritima, aereo", "attempts" => 3, "timeout" => 5));
 	
 	$flight_num = $flight->value;
 	$direction = $flight_type->value;
