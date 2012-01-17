@@ -13,7 +13,7 @@ define("SCRAPERWIKI_QUERY", "select%20*%20from%20%60swdata%60%20where%20%60fligh
 // Function to fetch JSON for a specific flight from Scrapewiki.
 function getFlightInfo($flight_num, $date, $direction) {
 	
-	$direction = (strtolower($direction) == "d") ? "MARITIMO" : "AIR";
+	$direction = (strtolower($direction) == "d") ? "MARITIMA" : "AEREO";
 	$query = str_replace(array("[[flight_num]]", "[[date]]", "[[direction]]"), array($flight_num, $date, $direction), SCRAPERWIKI_QUERY);
 	$url = SCRAPERWIKI_API_URL."?format=".SCRAPERWIKI_FORMAT."&name=".SCRAPERWIKI_NAME."&query=".$query;
 	return json_decode(file_get_contents($url));
@@ -43,9 +43,9 @@ function formatResponse($direction, $flight_info, $channel) {
 $date = date("m.d.y");
 
 if($currentCall->channel == "VOICE") {
-	say("Thank you for calling my airport test application.");
-	$flight = ask("Please say or enter your numeric flight number.", array("choices" => "[1-24 DIGITS]", "attempts" => 3, "timeout" => 5));
-	$flight_type = ask("Is sent by sea or air?", array("choices" => "air, sea", "attempts" => 3, "timeout" => 5));
+	say("Gracias por llamar a nuestro sistema de rastreo.");
+	$flight = ask("Por favor entre o diga su numero de rastreo.", array("choices" => "[1-24 DIGITS]", "attempts" => 3, "timeout" => 5));
+	$flight_type = ask("es enviado via maritima o aereo?", array("choices" => "maritima, aereo", "attempts" => 3, "timeout" => 5));
 	
 	$flight_num = $flight->value;
 	$direction = $flight_type->value;
@@ -60,7 +60,7 @@ else {
 try {
 	$flight_info = getFlightInfo($flight_num, $date, $direction);
 	if(count($flight_info) == 0) {
-		say("No information found for flight $flight_num on $date.");
+		say("No se encontro informacion en $flight_num on $date.");
 	}
 	else {
 		$say = formatResponse($direction, $flight_info[0], $currentCall->channel);
@@ -69,7 +69,7 @@ try {
 }
 
 catch (Exception $ex) {
-	say("Sorry, could not look up flight info. Please try again later.");
+	say("Lo sentimos, no pudimos encontrar informacion. Por favor intente mas tarde.");
 }
 
 ?>
