@@ -11,19 +11,20 @@ define("SCRAPERWIKI_NAME", "table1");
 define("SCRAPERWIKI_QUERY", "select%20*%20from%20%60swdata%60%20where%20%60flight_num%60%20%3D%20%22[[flight_num]]%22%20and%20date%20%3D%20%22[[date]]%22%20and%20%60flight_type%60%20%3D%20%22[[direction]]%22");
 
 // Function to fetch JSON for a specific flight from Scrapewiki.
-function getFlightInfo($flight_num, $date) {
+function getFlightInfo($flight_num, $date, $direction) {
 	
-	
-	$query = str_replace(array("[[flight_num]]", "[[date]]", array($flight_num, $date), SCRAPERWIKI_QUERY);
+	$direction = (strtolower($direction) == "d") ? "DEPARTURE" : "ARRIVAL";
+	$query = str_replace(array("[[flight_num]]", "[[date]]", "[[direction]]"), array($flight_num, $date, $direction), SCRAPERWIKI_QUERY);
 	$url = SCRAPERWIKI_API_URL."?format=".SCRAPERWIKI_FORMAT."&name=".SCRAPERWIKI_NAME."&query=".$query;
 	return json_decode(file_get_contents($url));
 
 }
 
 // Format response based on channel.
-function formatResponse($flight_info, $channel) {
+function formatResponse($direction, $flight_info, $channel) {
 	
-	
+	// Determine if the flight is an arrival or departure.
+	$leaveorarrive = (strtolower($direction) == "d") ? "leaving for" : "arriving from";
 	$gate = (strtolower($direction) == "d") ? " from " : " at ";
 	
 	// Format the flight number for the channel used.
