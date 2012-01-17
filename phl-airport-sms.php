@@ -64,8 +64,8 @@ else {
 try {
 	$flight_info = getFlightInfo($flight_num, $date, $direction);
 	if(count($flight_info) == 0) {
-		say("No se encontro informacion en $flight_num on $date.");
-	}
+		say("No se encontro informacion en $flight_num on $date.", array("voice" => "Diego"));
+}
 	else {
 		$say = formatResponse($direction, $flight_info[0], $currentCall->channel);
 		say($say);	
