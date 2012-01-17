@@ -43,7 +43,8 @@ function formatResponse($direction, $flight_info, $channel) {
 $date = date("m.d.y");
 
 if($currentCall->channel == "VOICE") {
-	say("Gracias por llamar a nuestro sistema de rastreo.");
+	say("Gracias por llamar a nuestro sistema de rastreo.", array("voice" => "Diego"));
+
 	$flight = ask("Por favor entre o diga su numero de rastreo.", array(
 	"voice" => 'Diego',
 	"choices" => "[1-25 DIGITS]", 
