@@ -23,7 +23,7 @@ function getFlightInfo($flight_num, $date, $direction) {
 // Format response based on channel.
 function formatResponse($direction, $flight_info, $channel) {
 	
-	// Determine if the flight is an arrival or departure.
+	// Determine if the flight is an air or sea.
 	$leaveorarrive = (strtolower($direction) == "d") ? "via sea" : "via air";
 	$gate = (strtolower($direction) == "d") ? " from " : " at ";
 	
@@ -45,7 +45,7 @@ $date = date("m.d.y");
 if($currentCall->channel == "VOICE") {
 	say("Thank you for calling my airport test application.");
 	$flight = ask("Please say or enter your numeric flight number.", array("choices" => "[1-24 DIGITS]", "attempts" => 3, "timeout" => 5));
-	$flight_type = ask("Is your flight an arrival or departure?", array("choices" => "arrival, departure", "attempts" => 3, "timeout" => 5));
+	$flight_type = ask("Is sent by sea or air?", array("choices" => "air, sea", "attempts" => 3, "timeout" => 5));
 	
 	$flight_num = $flight->value;
 	$direction = $flight_type->value;
