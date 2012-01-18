@@ -13,7 +13,7 @@ define("SCRAPERWIKI_QUERY", "select%20*%20from%20%60swdata%60%20where%20%60fligh
 // Function to fetch JSON for a specific flight from Scrapewiki.
 function getFlightInfo($flight_num, $date, $direction) {
 	
-	$direction = (strtolower($direction) == "d") ? "DEPARTURE" : "ARRIVAL";
+	$direction = (strtolower($direction) == "d") ? "DEPARTURE" : "AEREO";
 	$query = str_replace(array("[[flight_num]]", "[[date]]", "[[direction]]"), array($flight_num, $date, $direction), SCRAPERWIKI_QUERY);
 	$url = SCRAPERWIKI_API_URL."?format=".SCRAPERWIKI_FORMAT."&name=".SCRAPERWIKI_NAME."&query=".$query;
 	return json_decode(file_get_contents($url));
