@@ -24,7 +24,7 @@ function getFlightInfo($flight_num, $date, $direction) {
 function formatResponse($direction, $flight_info, $channel) {
 	
 	// Determine if the flight is an arrival or departure.
-	$leaveorarrive = (strtolower($direction) == "d") ? "updated from" : "updated from";
+	$leaveorarrive = (strtolower($direction) == "d") ? "updated by" : "updated by";
 	$gate = (strtolower($direction) == "d") ? "  " : "  ";
 	
 	// Format the flight number for the channel used.
@@ -35,7 +35,7 @@ function formatResponse($direction, $flight_info, $channel) {
 	$remarks = ucwords(strtolower($flight_info->remarks));
 	
 	// Build response to user.
-	$say = $flight_info->airline . " Tracking " . $flight_num . " $leaveorarrive " . $destination . " at " . $flight_info->time . "$gate Gate " . $flight_info->gate . ": " . $remarks;
+	$say = $flight_info->airline . " Tracking " . $flight_num . " $leaveorarrive " . $destination . " at " . $flight_info->time . "$gate  " . $flight_info->gate . " " . $remarks;
 	return $say;
 }
 
