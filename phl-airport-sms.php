@@ -50,7 +50,7 @@ if($currentCall->channel == "VOICE") {
 	"choices" => "[1-25 DIGITS]", 
 	"attempts" => 3, "timeout" => 5));	
 	
-	$flight_type = ask("es enviado via maritima o aereo?", array("voice" => 'Diego', "choices" => "maritima, aereo", "attempts" => 3, "timeout" => 5, "recognizer" => "es-cl"));
+	$flight_type = ask("es enviado via maritima o aereo?", array("voice" => 'Diego', "choices" => "maritima, aereo", "attempts" => 3, "timeout" => 5));
 	
 	$flight_num = $flight->value;
 	$direction = $flight_type->value;
