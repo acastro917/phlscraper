@@ -44,7 +44,7 @@ $date = date("m.d.y");
 
 if($currentCall->channel == "VOICE") {
 	say("Thank you for calling my airport test application.");
-	$flight = ask("Please say or enter your numeric flight number.", array("choices" => "[1-4 DIGITS]", "attempts" => 3, "timeout" => 5));
+	$flight = ask("Please say or enter your numeric flight number.", array("choices" => "[1-24 DIGITS]", "attempts" => 3, "timeout" => 5));
 	$flight_type = ask("Is your flight an arrival or departure?", array("choices" => "arrival, departure", "attempts" => 3, "timeout" => 5));
 	
 	$flight_num = $flight->value;
