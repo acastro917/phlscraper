@@ -24,7 +24,7 @@ function getFlightInfo($flight_num, $date, $direction) {
 function formatResponse($direction, $flight_info, $channel) {
 	
 	// determina si el envio es maritimo o aereo
-	$leaveorarrive = (strtolower($direction) == "d") ? "es maritimo " : "o es aereo";
+	$leaveorarrive = (strtolower($direction) == "d") ? "maritimo " : "aereo";
 	$gate = (strtolower($direction) == "d") ? " from " : " at ";
 	
 	// Format the flight number for the channel used.
@@ -50,7 +50,7 @@ if($currentCall->channel == "VOICE") {
 	"choices" => "[1-25 DIGITS]", 
 	"attempts" => 3, "timeout" => 5));	
 	
-	$flight_type = ask("es enviado via maritima o aereo?", array("voice" => 'Diego', "choices" => "maritima, aereo", "attempts" => 3, "timeout" => 5));
+	$flight_type = ask("es enviado via maritima o aereo?", array("recognizer" => "es-mx" "choices" => "maritima, aereo", "attempts" => 3, "timeout" => 5));  
 	
 	$flight_num = $flight->value;
 	$direction = $flight_type->value;
