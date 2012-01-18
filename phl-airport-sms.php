@@ -13,7 +13,7 @@ define("SCRAPERWIKI_QUERY", "select%20*%20from%20%60swdata%60%20where%20%60fligh
 // Function to fetch JSON for a specific flight from Scrapewiki.
 function getFlightInfo($flight_num, $date, $direction) {
 	
-	$direction = (strtolower($direction) == "d") ? "MARITIMA" : "AEREO";
+	$direction = (strtolower($direction) == "d") ? "SEA" : "AIR";
 	$query = str_replace(array("[[flight_num]]", "[[date]]", "[[direction]]"), array($flight_num, $date, $direction), SCRAPERWIKI_QUERY);
 	$url = SCRAPERWIKI_API_URL."?format=".SCRAPERWIKI_FORMAT."&name=".SCRAPERWIKI_NAME."&query=".$query;
 	return json_decode(file_get_contents($url));
@@ -23,8 +23,8 @@ function getFlightInfo($flight_num, $date, $direction) {
 // Format response based on channel.
 function formatResponse($direction, $flight_info, $channel) {
 	
-	// determina si el envio es maritimo o aereo
-	$leaveorarrive = (strtolower($direction) == "d") ? "maritimo " : "aereo";
+	// Determine if the flight is an arrival or departure.
+	$leaveorarrive = (strtolower($direction) == "d") ? "via sea" : "via air";
 	$gate = (strtolower($direction) == "d") ? " from " : " at ";
 	
 	// Format the flight number for the channel used.
@@ -43,14 +43,9 @@ function formatResponse($direction, $flight_info, $channel) {
 $date = date("m.d.y");
 
 if($currentCall->channel == "VOICE") {
-	say("Gracias por llamar a nuestro sistema de rastreo.", array("voice" => "Diego"));
-
-	$flight = ask("Por favor entre o diga su numero de rastreo.", array(
-	"voice" => 'Diego',
-	"choices" => "[1-25 DIGITS]", 
-	"attempts" => 3, "timeout" => 5));	
-	
-	$flight_type = ask("es enviado via maritima o aereo?", array("voice" => 'Diego', "choices" => "maritima, aereo", "attempts" => 3, "timeout" => 5));
+	say("Thank you for calling my airport test application.");
+	$flight = ask("Please say or enter your numeric flight number.", array("choices" => "[1-24 DIGITS]", "attempts" => 3, "timeout" => 5));
+	$flight_type = ask("Is your flight an arrival or departure?", array("choices" => "arrival, departure", "attempts" => 3, "timeout" => 5));
 	
 	$flight_num = $flight->value;
 	$direction = $flight_type->value;
@@ -65,8 +60,8 @@ else {
 try {
 	$flight_info = getFlightInfo($flight_num, $date, $direction);
 	if(count($flight_info) == 0) {
-		say("No se encontro informacion en $flight_num on $date.", array("voice" => "Diego"));
-}
+		say("No information found for flight $flight_num on $date.");
+	}
 	else {
 		$say = formatResponse($direction, $flight_info[0], $currentCall->channel);
 		say($say);	
@@ -74,6 +69,7 @@ try {
 }
 
 catch (Exception $ex) {
-	say("Lo sentimos, no pudimos encontrar informacion. Por favor intente mas tarde.", array("voice" => "Diego"));
+	say("Sorry, could not look up flight info. Please try again later.");
 }
+
 ?>
