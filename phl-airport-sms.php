@@ -43,7 +43,7 @@ function formatResponse($direction, $flight_info, $channel) {
 $date = date("m.d.y");
 
 if($currentCall->channel == "VOICE") {
-	say("Thank you for calling my airport test application.");
+	say("Thank you for calling the zigsa tracking.");
 	$flight = ask("Please say or enter your tracking number.", array("choices" => "[1-24 DIGITS]", "attempts" => 3, "timeout" => 5));
 	$flight_type = ask("Is your cargo coming by air or by sea?", array("choices" => "air, sea", "attempts" => 3, "timeout" => 5));
 	
